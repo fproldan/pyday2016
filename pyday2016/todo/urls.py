@@ -5,7 +5,7 @@ from .views import CategoriaViewSet, TareaViewSet
 
 router = DefaultRouter()
 router.register(r'categoria', CategoriaViewSet)
-router.register(r'tarea', TareaViewSet)
+router.register(r'tarea', TareaViewSet, base_name="tarea")
 
 urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
