@@ -21,16 +21,24 @@ class TareaSerializer(serializers.ModelSerializer):
         read_only=True,
         default=serializers.CurrentUserDefault())
 
-    categorias = serializers.SlugRelatedField(
-        slug_field="nombre",
+    categorias = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=False,
         queryset=Categoria.objects.all(),
-        many=True)
+        view_name='categoria-detail'
+    )
 
     class Meta:
         model = Tarea
         list_serializer_class = TareaListSerializer
         fields = ('id', 'nombre', 'usuario',
                   'categorias', 'hecha', 'url')
+
+    def validate_nombre(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError(
+                "Nombre debe contener mas de 5 caracteres")
+        return value
 
 
 class CategoriaSerializer(serializers.ModelSerializer):
